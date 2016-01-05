@@ -13,8 +13,11 @@
   "dependencies": {
     "bootstrap": "^3.3.6",
     "bootswatch": "^3.3.6",
+    "history": "^1.17.0",
     "react": "^0.14.3",
-    "react-dom": "^0.14.3"
+    "react-dom": "^0.14.3",
+    "react-router": "^1.0.3",
+    "reflux": "^0.3.0"
   },
   "devDependencies": {
     "babel-core": "^6.3.26",
