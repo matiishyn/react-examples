@@ -3,6 +3,7 @@ import Api from '../utils/api';
 import TopicStore from '../stores/topic-store';
 import Reflux from 'reflux';
 import Actions from '../actions';
+import { Router, Route, Link } from 'react-router';
 
 let TopicList = React.createClass({
     mixins: [
@@ -18,7 +19,6 @@ let TopicList = React.createClass({
     render() {
         return (
             <div className="list-group">
-                Topic List
                 {this.renderTopics()}
             </div>
         );
@@ -29,7 +29,14 @@ let TopicList = React.createClass({
     },
 
     renderTopics() {
-        return this.state.topics.map(topic => <li key={topic.id}>{topic.name}</li>);
+        return this.state.topics.map(topic =>
+            <Link to={"/topics/"+topic.id}
+                  className="list-group-item"
+                  key={topic.id}>
+                <h4>{topic.name}</h4>
+                <p>{topic.description}</p>
+            </Link>
+        );
     },
 
     onChange(event, topics) {
