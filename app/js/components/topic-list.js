@@ -2,6 +2,7 @@ import React from 'react';
 import Api from '../utils/api';
 import TopicStore from '../stores/topic-store';
 import Reflux from 'reflux';
+import Actions from '../actions';
 
 let TopicList = React.createClass({
     mixins: [
@@ -24,11 +25,11 @@ let TopicList = React.createClass({
     },
 
     componentWillMount() {
-        TopicStore.getTopics();
+        Actions.getTopics();
     },
 
     renderTopics() {
-        return this.state.topics.map(topic => <li>{topic.name}</li>);
+        return this.state.topics.map(topic => <li key={topic.id}>{topic.name}</li>);
     },
 
     onChange(event, topics) {
