@@ -16,7 +16,10 @@ let Topic = React.createClass({
     },
 
     componentWillMount() {
-        console.log('will mount');
+        Actions.getImages(this.props.params.id);
+    },
+
+    componentWillReceiveProps(nextProps) {
         Actions.getImages(this.props.params.id);
     },
 
@@ -30,6 +33,10 @@ let Topic = React.createClass({
 
     onChange(event, images) {
         this.setState({images: images});
+    },
+
+    renderImages() {
+
     }
 });
 
