@@ -3,6 +3,7 @@ import { Router, Route, Link } from 'react-router';
 import Reflux from 'reflux';
 import Actions from '../actions';
 import ImageStore from '../stores/image-store';
+import ImagePreview from './image-preview';
 
 let Topic = React.createClass({
     mixins: [
@@ -26,7 +27,7 @@ let Topic = React.createClass({
     render() {
         return (
             <div>
-                Topic #{this.props.params.id}
+                {this.renderImages()}
             </div>
         );
     },
@@ -36,7 +37,11 @@ let Topic = React.createClass({
     },
 
     renderImages() {
-
+        return this.state.images.slice(0,10).map(image => {
+            return (
+                <ImagePreview key={image.id} {...image}/>
+            );
+        });
     }
 });
 
