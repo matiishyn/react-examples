@@ -3,9 +3,9 @@ var path = require('path');
 
 module.exports = {
     //context: __dirname + "/app",
-    entry: path.join(__dirname, 'app', 'js', 'entry'),
+    entry: path.join(__dirname, 'src', 'main'),
     output: {
-        path: path.join(__dirname, 'app', 'dist'),
+        path: path.join(__dirname, 'src', 'dist'),
         filename: "bundle.js"
     },
     plugins: [
@@ -14,7 +14,7 @@ module.exports = {
             // ./public directory is being served
             host: 'localhost',
             port: 3000,
-            server: {baseDir: ['app']}
+            server: {baseDir: ['src']}
         })
     ],
     module: {

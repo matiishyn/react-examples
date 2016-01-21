@@ -1,5 +1,5 @@
 {
-  "name": "udemy-react",
+  "name": "fb-flux-example",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -11,14 +11,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "^3.3.6",
-    "bootswatch": "^3.3.6",
-    "history": "^1.17.0",
-    "lodash": "^3.10.1",
     "react": "^0.14.3",
-    "react-dom": "^0.14.3",
-    "react-router": "^1.0.3",
-    "reflux": "^0.3.0"
+    "react-dom": "^0.14.3"
   },
   "devDependencies": {
     "babel-core": "^6.3.26",
