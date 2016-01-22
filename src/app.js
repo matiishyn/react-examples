@@ -1,18 +1,49 @@
 import React from 'react';
 
-const FilterLink = ({filter, currentFilter, children, onClick}) => {
-    if (filter === currentFilter) {
+// ONLY APPEARANCE, without logic
+const Link = ({active,children, onClick}) => {
+    if (active) {
         return <span>{children}</span>
     }
     return (
         <a href="#"
            onClick={e=> {
                 e.preventDefault();
-                onClick(filter)
+                onClick()
            }}
         >{children}</a>
     );
 };
+
+class FilterLink extends React.Component {
+    componentDidMount() {
+        this.unsubscribe = store.subscribe(() => {
+            this.forceUpdate();
+        });
+    }
+
+    componentWillUnmount() {
+        this.unsubscribe();
+    }
+
+    render() {
+        const props = this.props;
+        const state = store.getState();
+        return (
+            <Link
+                active={ props.filter === state.visibilityFilter }
+                onClick={() =>
+                    store.dispatch({
+                        type: 'SET_VISIBILITY_FILTER',
+                        filter: props.filter
+                    })
+                }
+            >
+                {props.children}
+            </Link>
+        );
+    }
+}
 
 const getVisibleTodos = (todos, filter) => {
     switch (filter) {
