@@ -12,41 +12,22 @@ import todoAppReducer from './reducers';
 
 window.store = createStore(todoAppReducer);
 
-console.log(store.getState());
+store.dispatch({ type: 'ADD_TODO', id: 1, text: '1' });
+store.dispatch({ type: 'ADD_TODO', id: 2, text: '2' });
+store.dispatch({ type: 'ADD_TODO', id: 3, text: '3' });
+store.dispatch({ type: 'ADD_TODO', id: 4, text: '4' });
 
-store.dispatch({
-    type: 'ADD_TODO',
-    id: 0,
-    text: 'first'
-});
-
-console.log(store.getState());
-
-store.dispatch({
-    type: 'ADD_TODO',
-    id: 1,
-    text: 'second'
-});
-
-console.log(store.getState());
-
-store.dispatch({
-    type: 'TOGGLE_TODO',
-    id: 1
-});
-
-console.log(store.getState());
+store.dispatch({ type: 'TOGGLE_TODO', id: 1 });
+store.dispatch({ type: 'TOGGLE_TODO', id: 3 });
 
 
 //=============================================================
 // VIEW LAYER
 
 
-
-
 const render = () => {
     ReactDOM.render(
-        <TodoApp todos={store.getState().todos}/>,
+        <TodoApp {...store.getState()}/>,
         document.getElementById('root')
     );
 };

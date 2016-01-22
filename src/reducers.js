@@ -10,6 +10,7 @@ const todo = (state = [], action) => {
             };
 
         case 'TOGGLE_TODO':
+
             if (state.id !== action.id) {
                 return state;
             }

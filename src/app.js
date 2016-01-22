@@ -1,42 +1,119 @@
 import React from 'react';
 
-export default class TodoApp extends React.Component {
-    onClickHandler() {
-        store.dispatch({
-            type: 'ADD_TODO',
-            text: this.input.value,
-            id: nextId++
-        });
-        this.input.value = '';
+const FilterLink = ({filter, currentFilter, children, onClick}) => {
+    if (filter === currentFilter) {
+        return <span>{children}</span>
     }
+    return (
+        <a href="#"
+           onClick={e=> {
+                e.preventDefault();
+                onClick(filter)
+           }}
+        >{children}</a>
+    );
+};
 
-    toggleTodoHandler(todo) {
-        store.dispatch({
-            type: 'TOGGLE_TODO',
-            id: todo.id
-        });
-    }
+const getVisibleTodos = (todos, filter) => {
+    switch (filter) {
+        case 'SHOW_ALL':
+            return todos;
+        case 'SHOW_COMPLETED':
+            return todos.filter(todo => todo.completed);
+        case 'SHOW_ACTIVE':
+            return todos.filter(todo => !todo.completed);
+        default:
 
-    getLiClassName(todo) {
-        return todo.completed ? 'completed-todo' : '';
-    }
-
-    renderLi(todo) {
-        return <li
-            className={this.getLiClassName.call(this,todo)}
-            onClick={this.toggleTodoHandler.bind(this, todo)}
-            key={todo.id}>{todo.text}</li>
-    }
-
-    render() {
-        return (
-            <div>
-                <input ref={node => {this.input = node;}}/>
-                <button onClick={this.onClickHandler.bind(this)}>Add todo</button>
-                <ul>
-                    {this.props.todos.map(this.renderLi.bind(this))}
-                </ul>
-            </div>
-        );
     }
 };
+
+// PRESENTATIONAL COMPONENT, NO LOGIC HERE
+const Todo = ({onClick, completed, text}) => {
+    return (
+        <li
+            onClick={onClick}
+            style={{ textDecoration: completed ? 'line-through' : 'none' }}
+        >
+            {text}
+        </li>
+    );
+};
+
+// PRESENTATIONAL COMPONENT, NO LOGIC HERE
+const AddTodo = ({onAddClick}) => {
+    let input;
+    return (
+        <div>
+            <input ref={node => {input = node;}}/>
+            <button onClick={()=>{
+                onAddClick(input.value);
+                input.value = '';
+            }}>
+                Add todo
+            </button>
+        </div>
+    );
+};
+
+// PRESENTATIONAL COMPONENT, NO LOGIC HERE
+const TodoList = ({todos, onTodoClick}) => (
+    <ul>
+        {todos.map(todo =>
+            <Todo
+                key={todo.id}
+                {...todo}
+                onClick={() => onTodoClick(todo.id)}
+            />)}
+    </ul>
+);
+
+// PRESENTATIONAL COMPONENT, NO LOGIC HERE
+const Footer = ({visibilityFilter, onFilterClick}) => (
+    <p>
+        Show:{' '}
+
+        <FilterLink filter="SHOW_ALL" currentFilter={visibilityFilter} onClick={onFilterClick}>All</FilterLink>{' '}
+
+        <FilterLink filter="SHOW_ACTIVE" currentFilter={visibilityFilter}
+                    onClick={onFilterClick}>Active</FilterLink>{' '}
+
+        <FilterLink filter="SHOW_COMPLETED" currentFilter={visibilityFilter}
+                    onClick={onFilterClick}>Completed</FilterLink>
+    </p>
+);
+
+export default ({ todos, visibilityFilter }) => (
+    <div>
+        <AddTodo
+            onAddClick={
+                        text => store.dispatch({
+                            type: 'ADD_TODO',
+                            text,
+                            id: nextId++
+                        })
+                    }
+        />
+
+        <TodoList
+            todos={getVisibleTodos(todos, visibilityFilter)}
+            onTodoClick={id => {
+                        store.dispatch({
+                            type: 'TOGGLE_TODO',
+                            id
+                        })
+                        }
+                    }
+        />
+
+
+        <Footer
+            visibilityFilter={visibilityFilter}
+            onFilterClick={filter =>
+                        store.dispatch({
+                            type: 'SET_VISIBILITY_FILTER',
+                            filter
+                        })
+                    }
+        />
+    </div>
+);
