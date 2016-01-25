@@ -1,5 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {addTodo, setVisibilityFilter} from './actions';
 
 
 // ONLY APPEARANCE, without logic
@@ -26,10 +27,7 @@ const mapStateToLinkProps = (state, ownProps) => {
 const mapDispatchToLinkProps = (dispatch, ownProps) => {
     return {
         onClick: () => {
-            dispatch({
-                type: 'SET_VISIBILITY_FILTER',
-                filter: ownProps.filter
-            })
+            dispatch(setVisibilityFilter(ownProps.filter))
         }
     };
 };
@@ -72,11 +70,7 @@ let AddTodo = ({dispatch}) => {
         <div>
             <input ref={node => {input = node;}}/>
             <button onClick={()=>{
-                dispatch({
-                    type: 'ADD_TODO',
-                    text: input.value,
-                    id: nextId++
-                });
+                dispatch(addTodo(input.value));
                 input.value = '';
             }}>
                 Add todo
