@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from 'react-redux';
+
 
 // ONLY APPEARANCE, without logic
 const Link = ({active,children, onClick}) => {
@@ -110,42 +112,6 @@ const TodoList = ({todos, onTodoClick}) => (
     </ul>
 );
 
-class VisibleTodoList extends React.Component {
-    componentDidMount() {
-        const {store} = this.context;
-        this.unsubscribe = store.subscribe(() => {
-            this.forceUpdate();
-        });
-    }
-
-    componentWillUnmount() {
-        this.unsubscribe();
-    }
-
-    render() {
-        const {store} = this.context;
-        const props = this.props;
-        const state = store.getState();
-
-        return (
-            <TodoList
-                todos={ getVisibleTodos(state.todos, state.visibilityFilter) }
-                onTodoClick={id =>
-                    store.dispatch({
-                        type:'TOGGLE_TODO',
-                        id
-                    })
-                }
-            >
-
-            </TodoList>
-        );
-    }
-}
-VisibleTodoList.contextTypes = {
-    store: React.PropTypes.object
-};
-
 // PRESENTATIONAL COMPONENT, NO LOGIC HERE
 const Footer = ({visibilityFilter, onFilterClick}) => (
     <p>
@@ -160,6 +126,32 @@ const Footer = ({visibilityFilter, onFilterClick}) => (
                     onClick={onFilterClick}>Completed</FilterLink>
     </p>
 );
+
+
+// map redux props state to Todo component
+const mapStateToProps = (state) => {
+    return {
+        todos: getVisibleTodos(state.todos, state.visibilityFilter)
+    };
+};
+
+// maps Dispatch method of the store to the comp
+const mapDispatchToProps = (dispatch) => {
+    return {
+        onTodoClick: (id) => {
+            dispatch({
+                type: 'TOGGLE_TODO',
+                id
+            })
+        }
+    };
+};
+
+const VisibleTodoList = connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TodoList);
+
 
 export default () => (
     <div>
