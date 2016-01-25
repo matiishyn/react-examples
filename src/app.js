@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {addTodo, setVisibilityFilter} from './actions';
+import {addTodo, setVisibilityFilter, toggleTodo} from './actions';
 
 
 // ONLY APPEARANCE, without logic
@@ -119,10 +119,7 @@ const mapStateToTodoListProps = (state) => {
 const mapDispatchToTodoListProps = (dispatch) => {
     return {
         onTodoClick: (id) => {
-            dispatch({
-                type: 'TOGGLE_TODO',
-                id
-            })
+            dispatch(toggleTodo(id))
         }
     };
 };
