@@ -17,6 +17,7 @@ const Link = ({active,children, onClick}) => {
 
 class FilterLink extends React.Component {
     componentDidMount() {
+        const {store} = this.context;
         this.unsubscribe = store.subscribe(() => {
             this.forceUpdate();
         });
@@ -27,6 +28,7 @@ class FilterLink extends React.Component {
     }
 
     render() {
+        const {store} = this.context;
         const props = this.props;
         const state = store.getState();
         return (
@@ -44,6 +46,9 @@ class FilterLink extends React.Component {
         );
     }
 }
+FilterLink.contextTypes = {
+    store: React.PropTypes.object
+};
 
 const getVisibleTodos = (todos, filter) => {
     switch (filter) {
@@ -71,7 +76,7 @@ const Todo = ({onClick, completed, text}) => {
 };
 
 // PRESENTATIONAL COMPONENT, NO LOGIC HERE
-const AddTodo = () => {
+const AddTodo = (props, {store}) => {
     let input;
     return (
         <div>
@@ -89,6 +94,9 @@ const AddTodo = () => {
         </div>
     );
 };
+AddTodo.contextTypes = {
+    store: React.PropTypes.object
+};
 
 // PRESENTATIONAL COMPONENT, NO LOGIC HERE
 const TodoList = ({todos, onTodoClick}) => (
@@ -104,6 +112,7 @@ const TodoList = ({todos, onTodoClick}) => (
 
 class VisibleTodoList extends React.Component {
     componentDidMount() {
+        const {store} = this.context;
         this.unsubscribe = store.subscribe(() => {
             this.forceUpdate();
         });
@@ -114,6 +123,7 @@ class VisibleTodoList extends React.Component {
     }
 
     render() {
+        const {store} = this.context;
         const props = this.props;
         const state = store.getState();
 
@@ -132,6 +142,9 @@ class VisibleTodoList extends React.Component {
         );
     }
 }
+VisibleTodoList.contextTypes = {
+    store: React.PropTypes.object
+};
 
 // PRESENTATIONAL COMPONENT, NO LOGIC HERE
 const Footer = ({visibilityFilter, onFilterClick}) => (
@@ -151,10 +164,7 @@ const Footer = ({visibilityFilter, onFilterClick}) => (
 export default () => (
     <div>
         <AddTodo/>
-
         <VisibleTodoList/>
-
-
         <Footer/>
     </div>
 );
