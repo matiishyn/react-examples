@@ -78,13 +78,13 @@ const Todo = ({onClick, completed, text}) => {
 };
 
 // PRESENTATIONAL COMPONENT, NO LOGIC HERE
-const AddTodo = (props, {store}) => {
+let AddTodo = ({dispatch}) => {
     let input;
     return (
         <div>
             <input ref={node => {input = node;}}/>
             <button onClick={()=>{
-                store.dispatch({
+                dispatch({
                     type: 'ADD_TODO',
                     text: input.value,
                     id: nextId++
@@ -96,9 +96,7 @@ const AddTodo = (props, {store}) => {
         </div>
     );
 };
-AddTodo.contextTypes = {
-    store: React.PropTypes.object
-};
+AddTodo = connect()(AddTodo);
 
 // PRESENTATIONAL COMPONENT, NO LOGIC HERE
 const TodoList = ({todos, onTodoClick}) => (
@@ -127,16 +125,16 @@ const Footer = ({visibilityFilter, onFilterClick}) => (
     </p>
 );
 
+// ==========================================
 
 // map redux props state to Todo component
-const mapStateToProps = (state) => {
+const mapStateToTodoListProps = (state) => {
     return {
         todos: getVisibleTodos(state.todos, state.visibilityFilter)
     };
 };
-
 // maps Dispatch method of the store to the comp
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToTodoListProps = (dispatch) => {
     return {
         onTodoClick: (id) => {
             dispatch({
@@ -146,12 +144,11 @@ const mapDispatchToProps = (dispatch) => {
         }
     };
 };
-
 const VisibleTodoList = connect(
-    mapStateToProps,
-    mapDispatchToProps
+    mapStateToTodoListProps,
+    mapDispatchToTodoListProps
 )(TodoList);
-
+// ==========================================
 
 export default () => (
     <div>
