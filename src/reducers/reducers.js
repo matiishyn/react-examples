@@ -6,23 +6,34 @@ const initialState = {
     todos: []
 }
 
+function todo(state = {}, action) {
+    switch (action.type) {
+        case ADD_TODO:
+            return {
+                text: action.text,
+                completed: false
+            }
+
+        case COMPLETE_TODO:
+            return {
+                ...state,
+                completed: true
+            }
+    }
+}
+
 function todos(state = [], action) {
     switch (action.type) {
         case ADD_TODO:
             return [
                 ...state,
-                {
-                    text: action.text,
-                    completed: false
-                }
+                todo(state, action)
             ]
 
         case COMPLETE_TODO:
             return [
                 ...state.slice(0, action.index),
-                Object.assign({}, state[action.index], {
-                    completed: true
-                }),
+                todo(state, action),
                 ...state.slice(action.index + 1)
             ]
 
@@ -41,13 +52,6 @@ function visibilityFilter(state = VisibilityFilters.SHOW_ALL, action) {
     }
 }
 
-//function todoApp(state = initialState, action) {
-//    return {
-//        visibilityFilter: visibilityFilter(state.visibilityFilter, action),
-//        todos: todos(state.todos, action)
-//    }
-//}
-// is equivalent to:
 const todoApp = combineReducers({
     visibilityFilter,
     todos

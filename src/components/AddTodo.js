@@ -15,7 +15,8 @@ export default class AddTodo extends React.Component {
     handleClick(e) {
         const node = this.refs.input
         const text = node.value
-
+        this.props.onAddClick(text)
+        node.value = ''
     }
 }
 
