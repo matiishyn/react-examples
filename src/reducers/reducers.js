@@ -33,7 +33,7 @@ function todos(state = [], action) {
         case COMPLETE_TODO:
             return [
                 ...state.slice(0, action.index),
-                todo(state, action),
+                todo(state[action.index], action),
                 ...state.slice(action.index + 1)
             ]
 
